@@ -1,0 +1,112 @@
+\begin{multicols*}{2}
+
+\begin{center}
+     \Large{Confidence Interval for $\hat{p}$ (Proportion)(Stichprobenanteil)}
+\end{center}
+
+\begin{center}
+     \Large{We are estimating $\hat{p}$, the sample proportion}
+\end{center}
+
+\[
+\left[ \hat{p} - u_{1 - \frac{\alpha}{2}} \cdot \sqrt{\frac{\hat{p}(1 - \hat{p})}{n}}, \, \hat{p} + u_{1 - \frac{\alpha}{2}} \cdot \sqrt{\frac{\hat{p}(1 - \hat{p})}{n}} \right]
+\]
+$$\hat{p} = \frac{probability \cdot n}{n}$$
+
+\begin{lstlisting}
+prob <- 0.7
+alpha <- 0.05
+n <- 250
+p_hut <- (prob*n)/n
+q <- qnorm(1-(alpha/2))
+L <- p_hut - q * sqrt((p_hut * (1-p_hut))/n)
+U <- p_hut + q * sqrt((p_hut * (1-p_hut))/n)
+binom.test(x=0.7 * n, n=n, conf.level = 1-alpha, alternative = "two.sided")$conf.int
+#[0.6431948, 0.7568052]
+\end{lstlisting}
+wir sind uns zu 95\% sicher, dass zwischen 64\% und 75\% der Wähler ja gestimmt haben.
+\bigbreak
+
+\fbox{Nur obere oder untere Grenze berechnen:}
+
+Hier teilen wir $\alpha$ nicht mehr, da sich die Prozente auf eine Seite konzentrieren:
+
+\begin{lstlisting}
+q <- qnorm(1 - alpha)
+L_alleine <- p_hut - q * sqrt((p_hut * (1 - p_hut))/n)
+L_exact <- binom.test(x=0.7*n, n=n, conf.level = 1-alpha, alternative = 'greater')$conf.int
+U_alleine <- p_hut + q * sqrt((p_hut * (1 - p_hut))/n)
+U_exact <- binom.test(x=0.7*n, n=n, conf.level = 1-alpha, alternative = 'less')$conf.int
+
+\end{lstlisting}
+
+\hrule
+
+\begin{center}
+     \Large{Umformungen}
+\end{center}
+
+\fbox{$\hat{p}$: Solving for $\hat{p}$}
+\[
+\hat{p} = \frac{\text{upper limit} + \text{lower limit}}{2}
+\]
+
+\begin{lstlisting}
+p_hut <- (L + U) / 2
+\end{lstlisting}
+\bigbreak
+\fbox{$u_{1 - \frac{\alpha}{2}}$: \small{Für Quantile der Normalverteilung Umformen}}
+
+Aus der Intervalll\"ange:
+\[
+u_{1 - \frac{\alpha}{2}} = \frac{\text{Intervalll\"ange} \cdot \sqrt{n}}{2 \cdot \sqrt{\hat{p}(1-\hat{p})}}
+\]
+
+
+Aus der oberen Grenze:
+\[
+u_{1 - \frac{\alpha}{2}} = \frac{\text{obere Grenze} - \hat{p}}{\sqrt{\frac{\hat{p}(1-\hat{p})}{n}}}
+\]
+
+Aus der unteren Grenze:
+\[
+u_{1 - \frac{\alpha}{2}} = \frac{\hat{p} - \text{untere Grenze}}{\sqrt{\frac{\hat{p}(1-\hat{p})}{n}}}
+\]
+
+\begin{lstlisting}
+#nach q umstellen
+leange <- U - L
+q_umgestellt_1 <- (leange * sqrt(n)) / (2 * sqrt(p_hut * (1 - p_hut)))
+q_umgestellt_2 <- (U - p_hut) / (sqrt(p_hut * (1 - p_hut) / n))
+q_umgestellt_3 <- (p_hut - L) / (sqrt(p_hut * (1 - p_hut) / n))
+\end{lstlisting}
+
+
+
+\fbox{MOE (Margin of Error):}
+\[
+MOE = u_{1 - \frac{\alpha}{2}} \cdot \sqrt{\frac{\hat{p}(1-\hat{p})}{n}}
+\]
+$$
+MOE = \frac{Intervallänge}{2}
+$$
+
+\begin{lstlisting}
+moe <- q * (sqrt(p_hut * (1 - p_hut) / n))
+moe_2 <- leange / 2
+\end{lstlisting}
+
+\fbox{Intervalll\"ange:}
+\[
+\text{Intervalll\"ange} = 2 \cdot u_{1 - \frac{\alpha}{2}} \cdot \sqrt{\frac{\hat{p}(1-\hat{p})}{n}}
+\]
+$$
+\text{Intervalll\"ange} = U - L
+$$
+
+\begin{lstlisting}
+intervalllaenge <- 2 * q * (sqrt(p_hut * (1 - p_hut) / n))
+intervalllaenge <- U - L
+\end{lstlisting}
+
+\end{multicols*}
