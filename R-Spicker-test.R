@@ -82,3 +82,64 @@ moe <- leange/2
 
 L_alleine <- sample_mean - qt(1-alpha, n-1) * (sample_sd/sqrt(n))
 U_alleine <- sample_mean + qt(1-alpha, n-1) * (sample_sd/sqrt(n))
+
+
+#3te formel
+sample <- c(247.4, 249.0, 248.5, 247.5, 250.6, 252.2, 253.4, 248.3, 251.4, 246.9,
+        249.8, 250.6, 252.7, 250.6, 250.6, 252.5, 249.4, 250.6, 247.0, 249.4)
+mean <- 250
+alpha <- 0.05
+n <- length(sample)
+qn <- sum((sample - mean)^2)
+L_var <- qn / (qchisq(1 - (alpha / 2),n))
+U_var <- qn / qchisq(alpha / 2, n)
+
+#4te formel
+sample <- c(247.4, 249.0, 248.5, 247.5, 250.6, 252.2, 253.4, 248.3, 251.4, 246.9,
+        249.8, 250.6, 252.7, 250.6, 250.6, 252.5, 249.4, 250.6, 247.0, 249.4)
+alpha <- 0.05
+sample_sd <- sd(sample)
+n <- length(sample) #20
+b <- (n - 1) * sample_sd^2
+L_var <- b / qchisq(1 - (alpha / 2), n-1)
+U_var <- b / qchisq(alpha / 2, n - 1)
+sigma.test(x = sample, conf.level = 1 - alpha, alternative = 'two.sided')
+
+
+#stichprobenanteil
+
+prob <- 0.7
+alpha <- 0.05
+n <- 250
+p_hut <- (prob*n)/n
+q <- qnorm(1-(alpha/2))
+L <- p_hut - q * sqrt((p_hut * (1-p_hut))/n)
+U <- p_hut + q * sqrt((p_hut * (1-p_hut))/n)
+binom.test(x=0.7*n, n=n, conf.level = 1-alpha, alternative = "two.sided")$conf.int
+#[0.6431948, 0.7568052]
+
+q <- qnorm(1 - alpha)
+L_alleine <- p_hut - q * sqrt((p_hut * (1 - p_hut))/n)
+L_exact <- binom.test(x=0.7*n, n=n, conf.level = 1-alpha, alternative = 'greater')$conf.int
+U_alleine <- p_hut + q * sqrt((p_hut * (1 - p_hut))/n)
+U_exact <- binom.test(x=0.7*n, n=n, conf.level = 1-alpha, alternative = 'less')$conf.int
+
+
+#nach p umformen
+p_hut_umgestellt <- (U + L) / 2
+
+
+#nach q umstellen
+leange <- U - L
+q_umgestellt_1 <- (leange * sqrt(n)) / (2 * sqrt(p_hut * (1 - p_hut)))
+q_umgestellt_2 <- (U - p_hut) / (sqrt(p_hut * (1 - p_hut) / n))
+q_umgestellt_3 <- (p_hut - L) / (sqrt(p_hut * (1 - p_hut) / n))
+
+#moe
+moe <- q * (sqrt(p_hut * (1 - p_hut) / n))
+moe_2 <- leange / 2
+
+
+#leange
+leange_2 <- 2 * q * (sqrt(p_hut * (1 - p_hut) / n))
+leange <- U - L
