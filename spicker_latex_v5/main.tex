@@ -1,0 +1,101 @@
+
+\documentclass[10pt,a4paper]{article}
+
+% -------------------------------------------------------------------
+% packages 
+% -------------------------------------------------------------------
+
+\usepackage{geometry}
+\usepackage{multicol}
+\usepackage{amsmath,amsthm,amsfonts,amssymb}
+\usepackage{graphicx,overpic}
+\usepackage{color, colortbl}
+\usepackage{hyperref}
+\usepackage{listings}
+\usepackage{mdframed}
+%
+% fuer dei pvalue tabelle
+\usepackage[T1]{fontenc}
+\usepackage{lmodern}
+\usepackage{multicol}   % für mehrspaltiges Layout
+\usepackage{booktabs}   % für schönere Tabellenlinien
+\usepackage{amsmath}    % für mathematische Umgebungen
+% -------------------------------------------------------------------
+% parameters 
+% -------------------------------------------------------------------
+
+% margins & spacing 
+\geometry{margin = 0.5in}
+%\pagestyle{empty}
+\setlength{\parindent}{0pt} 
+\setlength{\parskip}{0pt}
+
+ % box style
+\lstset{ 
+    numbers=left,
+    basicstyle = \ttfamily,
+    frame = single,
+    rulecolor=\color{green},
+    breaklines = true,
+    columns = fullflexible,
+    stringstyle=\color{DarkGreen},
+    otherkeywords={0,1,2,3,4,5,6,7,8,9},
+    morekeywords={TRUE,FALSE},
+    deletekeywords={data,frame,length,as,character},
+    keywordstyle=\color{blue},
+    commentstyle=\color{DarkGreen},
+}
+% hyperlinks 
+\hypersetup{
+    colorlinks = true,
+    linkcolor = blue,
+    filecolor = magenta,      
+    urlcolor = cyan,
+}
+\usepackage{xcolor}
+\usepackage[utf8]{inputenc}
+\usepackage{color,soul}
+\usepackage{xcolor} % Paket für Farben
+\usepackage{fourier}
+\usepackage{verbatim}
+\setul{0.5ex}{0.3ex}
+\setulcolor{red}
+\renewcommand\fbox[1]{\fcolorbox{red}{white}{\textbf{ #1}}}% multicol parameters
+\newcommand\fboxyellow[1]{%
+    {\setlength{\fboxrule}{2pt}% Rahmenbreite nur hier ändern
+    \fcolorbox{yellow}{white}{\large #1}}%
+}% multicol parameters
+\setlength{\fboxrule}{2pt} % Rahmenbreite auf 2pt setzen
+\setlength{\premulticols}{2pt}
+\setlength{\postmulticols}{2pt}
+\setlength{\multicolsep}{2pt}
+\setlength{\columnsep}{20pt}
+
+% -------------------------------------------------------------------
+% functions & environments 
+% -------------------------------------------------------------------
+
+% mono space font 
+\newcommand{\code}[1]{\texttt{#1}}
+
+% -------------------------------------------------------------------
+% functions & environments 
+% -------------------------------------------------------------------
+
+\begin{document}
+\begin{multicols*}{2}
+\raggedcolumns
+\include{distributions}
+\include{tests}
+\include{case1-2}
+\include{case3-4}
+
+\include{2sample}
+
+\end{multicols*}
+
+\end{document}
+
+% ---------------------------------------------------------------
+% template 
+% ---------------------------------------------------------------
