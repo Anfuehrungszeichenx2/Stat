@@ -1,0 +1,60 @@
+\section{Probability}
+\subsection{Basic Rules}
+
+\begin{table}[h]
+    \centering
+    \begin{tabular}{|l|l|l|}
+  \hline
+        $P(A^c)$ & $1-P(A)$ & Probability that $A$ will not happen \\ 
+  \hline
+        $P(\emptyset)$ & $0$ & Probability of a null Event \\ 
+  \hline
+        $P(A \cap B)$ & \begin{tabular}{c}$P(A) * P(B)$  \\ $P(A|B)*P(B)$\end{tabular} & Probability of $A$ and $B$ occurring \\ 
+  \hline
+        $P(A \setminus B)$ & $P(A) - P(A \cap B)$ & Probability of $A$ without $B$ \\ 
+  \hline
+        $P(A \cup B)$ & $P(A) + P(B) - P(A \cap B)$ & Probability of $A$ or $B$ occurring \\ 
+  \hline
+        $P(A|B)$ & $\frac{P(A \cap B)}{P(B)}$ & Probability of $A$ if $B$ already happened \\ 
+  \hline
+\end{tabular}
+    \caption{$A, B$ = Events; $P(x)$ = Probability of Event x}
+    \label{tab:my_label}
+\end{table}
+
+$A \subseteq B \implies P(A) \leq P(B)$
+\begin{multicols*}{2}
+\subsection{Crossproduct}
+$A \times B$
+\begin{rcode}{1}
+omega <- expand.grid(x = 1:6, y = 1:6)
+\end{rcode}
+
+\subsection{Union}
+$A \cup B$
+\begin{rcode}{1}
+union(x = a, y = b)
+\end{rcode}
+
+\subsection{Intersection}
+$A \cap B$
+\begin{rcode}{1}
+intersect(x = a, y = b)
+\end{rcode}
+
+\subsection{Difference}
+$A \setminus B$
+\begin{rcode}{1}
+setdiff(x = a, y = b)
+\end{rcode}
+
+\subsection{Examples}
+\begin{rcode}{1}
+# Cases where first die is 1
+omega %>% filter(x = 1)
+# Cases where sum of dice equals 7
+omega %>% filter(x + y = 7)
+# Probability of dice equal 12
+count(omega %>% filter(x + y = 12)) / count(omega)
+\end{rcode}
+\end{multicols*}

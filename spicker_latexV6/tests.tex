@@ -1,0 +1,61 @@
+
+\section{Type I and II Errors}
+\noindent
+\begin{tabular}{|l|c|c|}
+\hline
+& \multicolumn{2}{c|}{\textbf{True state of } $H_0$}\\
+\hline
+\textbf{Statistical decision} & $H_0$ True & $H_0$ False\\
+\hline
+\textbf{Reject $H_0$} & Type I Error & Correct\\
+\hline
+\textbf{Do not reject $H_0$} & Correct & Type II Error\\
+\hline
+\end{tabular}
+
+\textbf{Definitions:}
+\begin{itemize}
+    \item $\alpha$: Probability of rejecting $H_0$ given that $H_0$ is true.
+    \item $\beta$: Probability of not rejecting $H_0$ given that $H_0$ is false.
+\end{itemize}
+
+\section{Relevante Übersetzungen}
+\begin{enumerate}
+    \item Dispersion: Streuung (vermutlich SD gemeint)
+    \item Scatter: Streuung (vermutlich SD gemeint)
+\end{enumerate}
+\section{P-Value}
+\noindent
+\noindent
+\begin{tabular}{lcl}
+  \toprule
+  \textbf{Hypothese}         & \textbf{Test-Typ}    & \textbf{p-Wert Berechnung} \\
+  \midrule
+  \(H_0: \mu \ge \mu_0\)      & Einseitig (links)   & \(p = \mathtt{pnorm}(z)\)   \\
+  \(H_0: \mu \le \mu_0\)      & Einseitig (rechts)  & \(p = 1 - \mathtt{pnorm}(z)\) \\
+  \(H_0: \mu = \mu_0\)        & Zweiseitig          & \(p = 2 \cdot \mathtt{pnorm}(-|z|)\) \\
+  \bottomrule
+\end{tabular}
+\section{Library}
+library(TeachingDemos)
+\pagebreak
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+

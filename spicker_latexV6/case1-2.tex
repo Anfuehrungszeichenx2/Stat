@@ -1,0 +1,164 @@
+- Der Index 0 z.b. $\mu_0$ bedeutet, dass es sich um einen gegebenen Wert, und nicht um einen geschätzten Wert handelt.
+
+\begin{center}
+\fbox{I) Gauß Test:}
+
+Hauptziel: Hier wird die Hypothese über den
+Mittelwert ($\mu$) getestet
+\end{center}
+\begin{center}
+\fboxyellow{
+     {\Large{Mean \textcolor{blue}{$\mu$} ist unbekannt, wir kennen SD $\sigma$}}
+}
+\end{center}
+
+
+\large{\textbf{Gegeben muss sein:}}
+\[
+H_0: \mu = \textcolor{blue}{\mu_0}, \quad H_0: \mu \leq \textcolor{blue}{\mu_0}, \quad H_0: \mu \geq \textcolor{blue}{\mu_0}
+\]
+\[
+\begin{array}{|c|l|}
+\hline
+\textbf{Symbol} & \textbf{Bedeutung} \\
+\hline
+n & \text{Stichprobengröße} \\
+\sigma_0 & \text{Standardabweichung der gesamtheit} \\
+\overline{X}_{(n)} & \text{Sample Mean} \\
+\hline
+\end{array}
+\]
+
+\normalsize
+\begin{comment}
+\large{\textbf{Teststatistik:}}
+\[
+T = \frac{\overline{X}_{(n)} - \textcolor{blue}{\mu}}{\frac{\sigma_0}{\sqrt{n}}} \sim N(0,1)
+\]
+\end{comment}
+\large{\textbf{Decision Rule  \(R\):}}
+\[
+T = \frac{\overline{X} - \textcolor{blue}{\mu_0}}{\frac{\sigma_0}{\sqrt{n}}} \in R \implies \text{reject } H_0
+\]
+\large{\textbf{Rejection Region \(R\):}}
+\[
+\begin{array}{|c|c|}
+\hline
+H_0 & \text{rejection region } R \\ \hline
+\mu = \textcolor{blue}{\mu_0} & (-\infty, -u_{1-\frac{\alpha}{2}}) \cup (u_{1-\frac{\alpha}{2}}, \infty) \\ \hline
+\mu \leq \textcolor{blue}{\mu_0} & (u_{1-\alpha}, \infty) \\ \hline
+\mu \geq \textcolor{blue}{\mu_0} & (-\infty, -u_{1-\alpha}) \\ \hline
+\end{array}
+\]
+\centering\fboxyellow{$u_{1-\frac{\alpha}{2}}$ = qnorm(1 - (alpha / 2))}
+
+\large{\textbf{Beispiel:}}
+\begin{rcode}{1}
+n <- 100
+sd <- 0.3
+sample_mean <- 10.1
+alpha <- 0.1
+#H0: mu = 10, H1: mu != 10
+mu0 <- 10
+#Rejection region
+ru <- qnorm(1 - (alpha / 2))
+rl <- -qnorm(1 - (alpha / 2))
+#[-inf , -1.644854] or [1.644854, inf]
+#teststatistic
+t <- (sample_mean - mu0) /(sd / sqrt(n))
+#3.333333
+t > ru
+#True
+#we reject h0 because we are in the rejection region
+p_value <- 2* pnorm(-abs(t))
+#0.0008581207
+p_value < alpha
+#True we reject H0 
+
+\end{rcode}
+hier vielleichtg noch z test einfpgen
+\columnbreak
+\begin{center}
+\fbox{II) t-Test:}
+\end{center}
+\normalsize
+Hauptziel: Hier wird die Hypothese über den Mittelwert ($\mu$) getestet.
+\begin{center}
+\fboxyellow{
+     \Large{Mean \textcolor{blue}{$\mu$} \ul{und} SD $\sigma_0$ sind unbekannt}
+}
+
+\textcolor{red}{\warning} Mean \textcolor{blue}{$\mu_0$} wird durch $H_0$ gegeben \textcolor{red}{\warning}
+\end{center}
+\large{\textbf{Gegeben muss sein:}}
+\[
+H_0: \mu = \textcolor{blue}{\mu_0}, \quad H_0: \mu \leq \textcolor{blue}{\mu_0}, \quad H_0: \mu \geq \textcolor{blue}{\mu_0}
+\]
+\[
+\begin{array}{|c|l|}
+\hline
+\textbf{Symbol} & \textbf{Bedeutung} \\
+\hline
+n & \text{Stichprobengröße} \\
+S_{(n)} & \text{Sample SD} \\
+\overline{X}_{(n)} & \text{Sample Mean} \\
+\hline
+\end{array}
+\]
+
+\begin{comment}
+\large{\textbf{Teststatistik:}}
+
+\[
+T = \frac{\overline{X}_{(n)} - \textcolor{blue}{\mu}}{\frac{s_{(n)}}{\sqrt{n}}} \sim t_{n-1},\text{with }
+s^2_{(n)} = \frac{1}{n-1} \sum_{i=1}^n (X_i - \overline{X}_{(n)})^2
+\]
+\end{comment}
+\large{\textbf{Decision Rule:}}
+\[
+T = \frac{\overline{X} - \textcolor{blue}{\mu_0}}{\frac{s_{(n)}}{\sqrt{n}}} \in R \implies \text{reject } H_0
+\]
+
+\large{\textbf{Rejection Region \(R\):}}
+
+\[
+\begin{array}{|c|c|}
+\hline
+H_0 & \text{Rejection Region } R \\ \hline
+\mu = \textcolor{blue}{\mu_0} & (-\infty, -t_{n-1, 1-\frac{\alpha}{2}}) \cup (t_{n-1, 1-\frac{\alpha}{2}}, \infty) \\ \hline
+\mu \leq \textcolor{blue}{\mu_0} & (t_{n-1, 1-\alpha}, \infty) \\ \hline
+\mu \geq \textcolor{blue}{\mu_0} & (-\infty, -t_{n-1, 1-\alpha}) \\ \hline
+\end{array}
+\]
+\centering\fboxyellow{$t_{n-1, 1-\frac{\alpha}{2}}$ = qt(1-alpha/2, n-1)}\\
+\textbf{exact \textcolor{red}{\warning}(nur möglich wenn wir Sample habe)\textcolor{red}{\warning}:}
+\begin{rcode}{1}
+t.test(x = sample, mu = mu0, alternative = "two.sided", conf.level = 1-alpha)
+\end{rcode}
+\large{\textbf{Approx Beispiel:}}
+\begin{rcode}{1}
+#H0: mu >= 250, h1: < 250
+n <- 82
+sample_mu <- 248
+sample_sd <- 5
+alpha <- 0.05
+mu0 <- 250
+R <- -qt(1-alpha, n-1)
+#[ , -1.663884]
+t <- (sample_mu - mu0) / ((sample_sd) / sqrt(n))
+#-3.622154
+t < R
+#We reject the H0
+p_value <- pt(t,n - 1)
+#0.0002540167
+p_value < alpha
+#True We reject the H0
+\end{rcode}
+\textbf{P-value Berechnen:}
+\begin{rcode}{1}
+pt(t, n-1) #H0: mu >= mu0
+1-pt(t, n-1) #H0: mu <= mu0
+2*pt(-abs(t), n-1) #H0: mu = mu0
+\end{rcode}
+
+\columnbreak

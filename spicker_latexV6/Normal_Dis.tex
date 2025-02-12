@@ -1,0 +1,191 @@
+\section{probability distributions functions}
+
+\begin{enumerate}
+    \item “d” returns the height of the probability density function
+    \item “p” returns the cumulative density function
+    \item “q” returns the inverse cumulative density function (quantiles)
+    \item “r” returns randomly generated numbers
+\end{enumerate}
+dgenom
+\subsection{\fbox{Normalverteilung}}
+\begin{rcode}{1}
+pnorm(q = , mean = , sd = )
+pnorm(q = 1.96, mean = 0, sd = 1)
+
+\end{rcode}
+q = Der Wert, bis zu dem wir \(P(X \le q)\) berechnen.\\
+Die Ausgabe ist die Wahrscheinlichkeit, dass \(X \le q\) gilt.\\
+\textbf{Beispiel:} berechnet \(P(X \le 1.96)\) für die Standardnormalverteilung.)\\
+\begin{rcode}{1}
+dnorm(x = , mean = , sd = )
+dnorm(x = 0, mean = 0, sd = 1)
+\end{rcode}
+x = Der Wert, an dem die Dichte berechnet wird.\\
+\textbf{Beispiel}: gibt die Dichte der Standardnormalverteilung bei \(x = 0\) zurück.)
+
+\bigskip
+
+\begin{rcode}{1}
+qnorm(p = , mean = , sd = )
+qnorm(p = 0.975, mean = 0, sd = 1)
+\end{rcode}
+p = Das Quantil, also der Wahrscheinlichkeitswert (zwischen 0 und 1).\\
+Die Ausgabe ist der \(x\)-Wert, sodass \(P(X \le x) = p\) gilt.\\
+\textbf{Beispiel:} liefert das 97,5\%-Quantil der Standardnormalverteilung.)
+\begin{rcode}{1}
+rnorm(n = , mean = , sd = )
+rnorm(n = 10, mean = 0, sd = 1)
+\end{rcode}
+n = Anzahl der zu erzeugenden Zufallswerte.\\
+Die Ausgabe sind \(n\) Zufallswerte aus der Normalverteilung.\\
+\textbf{Beispiel:} erzeugt 10 Zufallswerte aus einer Standardnormalverteilung.)
+
+\columnbreak
+\subsection{\fbox{Binomialverteilung}}
+size = number of trials (zero or more)
+\\prob = probability of success on each trial.
+\begin{rcode}{1}
+pbinom(q = , size = , prob = )
+pbinom(q = 5, size = 10, prob = 0.3)
+\end{rcode}
+q = Die Anzahl der Erfolge, bis zu der \(P(X \le q)\) berechnet wird.\\
+Die Ausgabe ist die Wahrscheinlichkeit, dass in \(size\) Versuchen höchstens \(q\) Erfolge erzielt werden.\\
+\textbf{Beispiel:} Berechnet \(P(X \le 5)\) für eine Binomialverteilung mit 10 Versuchen und einer Erfolgswahrscheinlichkeit von 0.3.)
+\begin{rcode}{1}
+dbinom(x = , size = , prob = )
+dbinom(x = 3, size = 10, prob = 0.3)
+\end{rcode}
+x = Die Anzahl der Erfolge, für die die Wahrscheinlichkeit berechnet wird.\\
+\textbf{Beispiel:} Gibt die Wahrscheinlichkeit zurück, genau 3 Erfolge in 10 Versuchen zu erzielen.)
+\begin{rcode}{1}
+qbinom(p = , size = , prob = )
+qbinom(p = 0.975, size = 10, prob = 0.3)
+\end{rcode}
+p = Das Quantil, also der Wahrscheinlichkeitswert (zwischen 0 und 1).\\
+Die Ausgabe ist die kleinste Anzahl von Erfolgen, sodass \(P(X \le x) \ge p\) gilt.\\
+\textbf{Beispiel:} Liefert das 97,5\%-Quantil der Binomialverteilung.)
+\begin{rcode}{1}
+rbinom(n = , size = , prob = )
+rbinom(n = 10, size = 10, prob = 0.3)
+\end{rcode}
+n = Anzahl der zu erzeugenden Zufallszahlen.\\
+Die Ausgabe sind \(n\) Zufallszahlen, die jeweils die Anzahl der Erfolge in \(size\) Versuchen darstellen.\\
+\textbf{Beispiel:} Erzeugt 10 Zufallszahlen aus einer Binomialverteilung mit 10 Versuchen und einer Erfolgswahrscheinlichkeit von 0.3.)
+\newpage
+\subsection{\fbox{Hypergeometrische Verteilung}}
+n = Nummer der Erfolge\\
+M = Nummer der Misserfolge\\
+k = Wie viele Versuche es gibt\\
+\begin{rcode}{1}
+phyper(q = , m = , n = , k = )
+phyper(q = 5, m = 20, n = 30, k = 10)
+\end{rcode}
+q = Die Anzahl der Erfolge, bis zu der \(P(X \le q)\) berechnet wird.\\
+Die Ausgabe ist die Wahrscheinlichkeit, dass bei \(k\) Ziehungen aus einer Urne mit \(m\) Erfolgen und \(n\) Misserfolgen höchstens \(q\) Erfolge erzielt werden.\\
+\textbf{Beispiel:} Berechnet \(P(X \le 5)\) für eine Hypergeometrische Verteilung mit \(m = 20\), \(n = 30\) und \(k = 10\).\\
+
+\begin{rcode}{1}
+dhyper(x = , m = , n = , k = )
+dhyper(x = 3, m = 20, n = 30, k = 10)
+\end{rcode}
+x = Die Anzahl der Erfolge, für die die Wahrscheinlichkeit berechnet wird.\\
+\textbf{Beispiel:} Gibt die Wahrscheinlichkeit zurück, genau 3 Erfolge bei 10 Ziehungen zu erzielen.\\
+
+\bigskip
+
+\begin{rcode}{1}
+qhyper(p = , m = , n = , k = )
+qhyper(p = 0.975, m = 20, n = 30, k = 10)
+\end{rcode}
+p = Das Quantil, also der Wahrscheinlichkeitswert (zwischen 0 und 1).\\
+Die Ausgabe ist die kleinste Anzahl von Erfolgen, sodass \(P(X \le x) \ge p\) gilt.\\
+\textbf{Beispiel:} Liefert das 97,5\%-Quantil der Hypergeometrischen Verteilung.\\
+
+\begin{rcode}{1}
+rhyper(nn = , m = , n = , k = )
+rhyper(nn = 10, m = 20, n = 30, k = 10)
+\end{rcode}
+nn = Anzahl der zu erzeugenden Zufallszahlen.\\
+Die Ausgabe sind \(nn\) Zufallszahlen, die jeweils die Anzahl der Erfolge in \(k\) Ziehungen darstellen.\\
+\textbf{Beispiel:} Erzeugt 10 Zufallszahlen aus einer Hypergeometrischen Verteilung mit \(m = 20\), \(n = 30\) und \(k = 10\).
+
+
+\newpage
+
+
+\section{\fbox{Expected Value und Varianz}}
+\subsection{\fbox{Discrete Random Variablen}}
+Erwartungswert(Mean) und Varianz einer diskreten Zufallsvariablen $X$ mit Wahrscheinlichkeitsfunktion $p(x)$
+\large{
+\[
+E[X] = \sum_{x} x \cdot\, p\cdot(x)
+\]
+\[
+\operatorname{Var}(X) = E\left[X^2\right] - \left(E\left[X\right]\right)^2
+\]
+}
+\normalsize
+\begin{rcode}{1}
+no_car <- 0.2
+one_car <- 0.7
+two_cars <- 0.1
+expected_value <- (0*no_car) + (1*one_car) + (2*two_cars)
+var <- ((0^2*no_car) + (1^2*one_car) + (2^2*two_cars)) - expected_value^2  
+\end{rcode}
+Hier Berechnen wir erst Mean und dann die Var. Um zur SD zu gelangen müssen wir sqrt()\\
+Um jetzt herauszufinden Wieviele Parkplätze wir bauen müssen um 99\% der Autos parken zu können. Müssen wir die Anzahl der Häuser mal dem expected Value und Var rechnen
+\begin{rcode}{1}
+n <- 1000
+qnorm(.99, mean = n*expected_value, sd=sqrt(n*var))
+\end{rcode}
+\subsection{\fbox{X ist Binomialy distributed}}
+\large
+\[
+E[X] = n \cdot p \quad, \quad \operatorname{Var}(X) =n \cdot p \cdot (1-p)
+\]
+\subsection{\fbox{Brauche ich hier wohl uniformly und hyper?????}}
+\normalsize
+\columnbreak
+\section{\fbox{Central Limit Theorem}}
+\subsection{\fbox{Nach Maximum Sample size Umstellen $n$}}
+\normalsize
+\large{\textcolor{red}{\warning} Hier sollte alpha 0.5 sein, sonst 
+Brute force \textcolor{red}{\warning}}\\
+-\\
+\normalsize
+Quantilgleichung die bei der Normalapproximation der Binominalverteilung angewendet wird:
+\large
+\[
+k + 0.5 = n \cdot p + \operatorname{qnorm}(\alpha) \cdot \sqrt{n \cdot p \cdot (1-p)}
+\]
+\normalsize
+Wir wissen, das wenn alpha = 0.5, ist qnorm(0.5) $=0$.\\
+Damit können wir $\sqrt{n \cdot p \cdot (1-p)}$ ignorieren!\\
+- Jetzt haben wir also:\\
+\large
+\[
+k + 0.5 = n \cdot p \quad\Longrightarrow\quad n = \frac{k+0.5}{p}
+\]
+\normalsize
+\large{\textbf{Beispiel:}}
+\normalsize
+Aus den Fakultäten B (25\%) und C (30\%) stammen insgesamt 55\% aller Studierenden. Bei einer zufällig gezogenen Stichprobe der Größe n ist die Anzahl X der Studierenden aus B und C binomialverteilt, also X ~ Bin(n, 0,55). Ein Raum bietet 80 Plätze, weshalb die Bedingung. Der Raum soll mit eine Chance von 50\% ausreichen\\
+P(X <= 80) >= 0,5
+erfüllt sein muss. Bestimme das maximale n, für das diese Anforderung gilt.\\
+\[
+k = 80,\quad p = 0.55,\quad \alpha = 0.5,\quad \operatorname{qnorm}(0.5) = 0
+\]\[
+n = \frac{80.5}{0.55} \approx 146.36.
+\]
+
+\begin{rcode}{1}
+n <- 80.5 / 0.55 #146.3636
+\end{rcode}
+Hier ist mein Bureforce Ansatz:
+\begin{rcode}{1}
+new_p <- b + c
+new_n <- 130:150
+x <- pbinom(80, new_n, new_p)
+x
+new_n[max(which(x >= 0.5))] #146
+\end{rcode}
