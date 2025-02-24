@@ -1,0 +1,181 @@
+\section{Distributions}
+
+\subsection*{\centering\fbox{1.1)Binominale Distribution \textcolor{red}{mit} Zurücklegen}}
+\begin{center}
+\textcolor{red}{\warning}\textcolor{red}{\warning} Mit Zurücklegen \textcolor{red}{\warning}\textcolor{red}{\warning}
+\end{center}
+\[ 
+P(X = k) \;=\; \binom{n}{k}\,p^k\,(1-p)^{\,n-k} 
+\]
+\large{\textbf{Beispiel:}}
+\normalsize
+Wir haben 7 Weiße Bälle und 3 Rote Bälle:
+Wie Wie groß ist die Wahrscheinlichkeit, dass wir in $n$=5 Zügen $k$=2 rote Bälle ziehen? $p$ ist 7/10
+\[
+P(X = 2) = \binom{5}{2} \left(\frac{3}{10}\right)^2 \left(\frac{7}{10}\right)^3.
+\]
+\begin{rcode}{1}
+dbinom(x = 2, size = 5, prob = 3/10)
+#0.1029193
+\end{rcode}
+\[
+    \begin{aligned}
+    &x:\quad \text{Wie viele Rote Bälle wir bekommen wollen},\\
+    &size:\quad \text{Wie Oft wir ziehen},\\
+    &prob:\quad \text{Die prob einen Roten Ball zu ziehen}
+    \end{aligned}
+\]
+%%%%%
+\subsection*{\centering\fbox{1.2)Hypergemoetric Distribution \textcolor{red}{ohne} Zurücklegen}}
+\textcolor{red}{\warning}\textcolor{red}{\warning}
+\textbf{Nutzen wir nur wenn das erste ziehen das zweite Ziehen beeinflusst}\textcolor{red}{\warning}\textcolor{red}{\warning}
+\begin{center}
+\textcolor{red}{\warning}\textcolor{red}{\warning} Wie Binomial, aber ohne Zurücklegen \textcolor{red}{\warning}\textcolor{red}{\warning}
+\end{center}
+\[
+P(X = k) 
+= \frac{\binom{M}{k}\,\binom{N - M}{\,n - k}}{\binom{N}{n}}
+\]
+\normalsize
+\[
+\begin{aligned}
+&N:\quad \text{Gesamtanzahl aller Elemente(z.B alle Kugeln)},\\
+&M:\quad \text{Anzahl der Roten Kugeln gesamt},\\
+&n:\quad \text{Wie oft wir Ziehen},\\
+&k:\quad \text{Wie viele Roten wir Ziehen}
+\end{aligned}
+\]\begin{rcode}{1}
+dhyper(x = 2, m = 3,n = 7,k = 5)
+#0.4166667
+\end{rcode}
+\normalsize
+\[
+\begin{aligned}
+&x:\quad \text{wie viele von den gezogenen Bällen Rot sein sollen},\\
+&M:\quad \text{wie viele Rote Bälle},\\
+&n:\quad \text{wie viele nicht Rote},\\
+&k:\quad \text{wie viele Bälle wir ziehen}
+\end{aligned}
+\]
+\columnbreak
+%%%%%
+\subsection*{\centering\fbox{1.3)Multinomial Distribution \textcolor{red}{mit} Zurücklegen}}
+\begin{center}
+\normalsize
+\textcolor{red}{\warning}\textcolor{red}{\warning} Wie Binomial aber mit mehr als zwei Optionen.\textcolor{red}{\warning}\textcolor{red}{\warning}
+\end{center}
+
+\textbf{Beispiel:}
+Angenommen, wir haben $n$ = 5 Versuche.
+
+drei mögliche Ergebnisse (z.B. rot, blau, schwarz) mit 
+
+$Rot = \frac{15}{20},\;Grün = \frac{4}{20},\;Blau = \frac{1}{20}$.
+Wir fragen: Wie groß ist die Wahrscheinlichkeit, dass genau 
+$Rot$=2,\; $Grün$=2,\; $Blau$=1
+\text{ auftritt?}
+\[
+\textbf{Formel:}\quad\frac{n!}{x_1!\,x_2!\,\cdots\,x_k!}\;p_1^{x_1}\,p_2^{x_2}\,\cdots\,p_k^{x_k},
+\]
+\large{\[
+\frac{5!}{2!\,2!\,1!}\,\Bigl(\tfrac{15}{20}\Bigr)^2\,\Bigl(\tfrac{4}{20}\Bigr)^2\,\Bigl(\tfrac{1}{20}\Bigr)^1
+= 0.3375.
+\]}
+\normalsize
+\begin{rcode}{1}
+(factorial(5) / (factorial(2) * factorial(2) * factorial(1))) *
+  ((15/20)^2 * (4/20)^2 * (1/20)^1) #0.03375
+#Hier auch als Funktion
+dmultinom(c(2, 2, 1),prob=c(15/20,4/20, 1/20))
+\end{rcode}
+
+%%%%%%%
+\subsection*{\centering\fbox{1.4)Multivariate Hypergeometric Distribution}}
+\begin{center}
+{\centering\fbox{\textcolor{red}{OHNE} Zurücklegen}}
+
+\normalsize
+\textcolor{red}{\warning}\textcolor{red}{\warning} Wie Binomial aber mit mehr als zwei Optionen. \textcolor{red}{\warning}\textcolor{red}{\warning}
+\end{center}
+
+
+\textbf{Beispiel:}
+
+Angenommen, wir haben $n$ = 5 Versuche.
+
+drei mögliche Ergebnisse (z.B. rot, blau, schwarz) mit 
+
+$Rot = \frac{15}{20},\;Grün = \frac{4}{20},\;Blau = \frac{1}{20}$.
+Wir fragen: Wie groß ist die Wahrscheinlichkeit, dass genau 
+$Rot$=2,\; $Grün$=2,\; $Blau$=1
+auftritt?
+\[
+\textbf{Formel:}\quad
+P\bigl(X_1 = k_1,\,X_2 = k_2,\,\dots,\,X_r = k_r\bigr)
+= \frac{\binom{K_1}{k_1}\,\binom{K_2}{k_2}\,\dots\,\binom{K_r}{k_r}}{\binom{N}{n}}
+\]
+\[
+\frac{\binom{15}{2}\,\binom{4}{2}\,\binom{1}{1}}{\binom{20}{5}}
+\approx 0.04063467.
+\]
+\begin{rcode}{1}
+(choose(15,2) * choose(4,2) * choose(1,1)) /choose(20,5) #0.04063467
+\end{rcode}
+%%%%%
+\columnbreak
+\subsection*{\centering\fbox{1.4)Sequentielle Ziehung \textcolor{red}{mit} Zurücklegen}}
+\begin{center}
+\normalsize
+\textcolor{red}{\warning}\textcolor{red}{\warning} mit Zurücklegen \textcolor{red}{\warning}\textcolor{red}{\warning}
+\end{center}
+\normalsize
+
+Wir haben insgesamt 20 Bälle, davon sind 15 Bälle nicht rot
+und 5 Bälle sind rot. Wir wollen die Wahrscheinlichkeit erst 4
+nicht rote Bälle zu ziehen und dann ein roten Ball zu ziehen. - Geometrische Verteilung
+\begin{mdframed}[linecolor=yellow, linewidth=2pt]
+P(Keinen roten Ball) = $\frac{15}{20}$
+
+P(Einen roten Ball) = $\frac{5}{20}$
+\end{mdframed}
+\large{
+\[\;P(X = 5)
+= \Bigl(1 - \frac{5}{20}\Bigr)^{4}
+\;\cdot\;\frac{5}{20}
+\]}
+\normalsize
+\begin{rcode}{1}
+(1 - (5 / 20))^4 * 5 / 20 #0.07910156
+dgeom(x = 4, prob = 5/20) #Mit Funktion
+\end{rcode}
+x = Nummer der anderen Bälle bis der 
+blaue kommt. todo
+\\Erst nehmen wir die chance (gegenwahrscheinlichkeit) keinen roten zu ziehen hoch 4 und dann mal die chance einen roten zu ziehen
+
+%%%%%
+\subsection*{\centering\fbox{1.6)Sequentielle Ziehung \textcolor{red}{ohne} Zurücklegen}}
+\begin{center}
+\normalsize
+\textcolor{red}{\warning}\textcolor{red}{\warning} Ohne Zurücklegen \textcolor{red}{\warning}\textcolor{red}{\warning}
+\end{center}
+\normalsize
+Wir haben insgesamt 20 Bälle, davon sind 15 Bälle nicht rot und 5 Bälle sind rot.
+Wir wollen die Wahrscheinlichkeit erst 4 nicht rote Bälle zu ziehen und dann ein roten Ball zu ziehen. Negative hypergeometrische Verteilung
+\begin{tcolorbox}[colback=white,colframe=yellow,sharp corners]
+P(Keinen roten Ball) = $\frac{15}{20}$
+
+P(Einen roten Ball) = $\frac{5}{20}$
+
+P(einen roten Ball nach 4 Zügen) = $\frac{5}{16}$
+
+\end{tcolorbox}
+\[
+P\bigl(X = 5\bigr)
+= \frac{\binom{15}{4}\,\binom{5}{0}}{\binom{20}{5}} \cdot \frac{5}{16}
+\]
+\normalsize
+Wir berechnen die Wahrscheinlichkeit 4 nicht rote Bälle zu ziehen Multipliziert mit der Wahrscheinlichkeit einen roten aus den verbleibenden Bällen zu Ziehen.
+\begin{rcode}{1}
+((choose(15,4)*choose(5,0))/choose(20,4)) * 5/16
+#0.0880418
+\end{rcode}

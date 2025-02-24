@@ -1,0 +1,134 @@
+\begin{multicols*}{2}
+
+\begin{center}
+     \Large{Confidence Interval for $\mu$ (Known Population $\sigma$)}
+\end{center}
+\begin{center}
+     \Large{Wir suchen den $\mu$, und wissen die Standardabweichung der Population $\sigma$}
+\end{center}
+
+$$
+\left[ \bar{X}_{(n)} - u_{1 - \frac{\alpha}{2}} \cdot \frac{\sigma}{\sqrt{n}}, \, \bar{X}_{(n)} + u_{1 - \frac{\alpha}{2}} \cdot \frac{\sigma}{\sqrt{n}} \right]
+$$
+Falls wir ein Sample haben, können wir den z-Test nutzen. Wenn nicht, müssen wir die Formel per Hand benutzen.
+\fbox{Nur Two sided}
+\begin{lstlisting}
+library(TeachingDemos)
+sample <- c(8, 9, 10, 13, 14, 16, 17, 20, 21)
+sample_mean <- mean(sample)
+pop_sd <- 2.8
+alpha <- 0.05
+q <- qnorm(1 - alpha / 2)
+n <- length(sample)
+L <- sample_mean - q * (pop_sd / sqrt(n))
+U <- sample_mean + q * (pop_sd / sqrt(n))
+z.test(x = sample, stdev = pop_sd, alternative = "two.sided", conf.level = 1-alpha)$conf.int
+z.test(x = sample_mean, n = n, stdev = pop_sd, alternative = "two.sided", conf.level = 1-alpha)$conf.int # Wenn sample.mean und n 
+\end{lstlisting}
+
+\fbox{Nur Upper ODER Lower}
+
+Wir müssen alpha \textcolor{red}{NICHT} mehr teilen, da sich die Prozente auf eine Seite konzentrieren.
+\begin{lstlisting}
+L_alleine <- sample_mean - qnorm(1 - alpha) * (sample_sd/sqrt(n))
+U_alleine <- sample_mean + qnorm(1 - alpha) * (sample_sd/sqrt(n))
+\end{lstlisting}
+\begin{center}
+     \Large{Umformungen}
+\end{center}
+\fbox{$\bar{X}_{(n)}$: Für den Sample Mean $\bar{X}_{(n)}$ Umstellen}
+$$
+\bar{X}_{(n)} = \frac{\text{obere Grenze} + \text{untere Grenze}}{2}
+$$
+\begin{lstlisting}
+sample_mean_umgestellt <- (L + U) / 2
+\end{lstlisting}
+
+\hrule
+\fbox{$u_{1 - \frac{\alpha}{2}}$: \small{Für Quantile der Normalverteilung Umformen}}
+
+Aus der Intervalllänge:
+$$u_{1 - \frac{\alpha}{2}} = \frac{\text{Intervalllänge} \cdot \sqrt{n}}{2 \cdot \sigma}$$
+ Aus der oberen Grenze:
+$$
+u_{1 - \frac{\alpha}{2}} = \frac{\text{obere Grenze} - \bar{X}_{(n)}}{\frac{\sigma}{\sqrt{n}}}
+$$
+Aus der unteren Grenze:
+$$
+u_{1 - \frac{\alpha}{2}} = \frac{\bar{X}_{(n)} - \text{untere Grenze}}{\frac{\sigma}{\sqrt{n}}}
+$$
+\begin{lstlisting}
+z <- (leange * sqrt(n)) / 2 * sampel_sd
+q_umgestellt <-(U - sample_mean) / (pop_sd / sqrt(n))
+q_umgestellt <-(sample_mean - L) / (pop_sd / sqrt(n))
+\end{lstlisting}
+\columnbreak
+\fbox{$\sigma$: Für die Standardabweichung $\sigma$}
+
+Aus der oberen Grenze:
+$$
+\sigma = \frac{\left( \text{obere Grenze} - \bar{X}_{(n)} \right) \cdot \sqrt{n}}{u_{1 - \frac{\alpha}{2}}}
+$$
+Aus der unteren Grenze:
+$$
+\sigma = \frac{\left( \bar{X}_{(n)} - \text{untere Grenze} \right) \cdot \sqrt{n}}{u_{1 - \frac{\alpha}{2}}}
+$$
+\begin{lstlisting}
+pop_sd_umgestellt <- ((U - sample_mean) * sqrt(n)) / qnorm(1 - alpha / 2)
+pop_sd_umgestellt <- ((sample_mean - L) * sqrt(n)) / qnorm(1 - alpha / 2)
+\end{lstlisting}
+
+\fbox{$n$: Für die Stichprobengröße $n$}
+
+Aus der oberen oder unteren Grenze:
+$$
+n = \left( \frac{\sigma \cdot u_{1 - \frac{\alpha}{2}}}{ \text{obere Grenze}-\bar{X}_{(n)}} \right)^2 = \left( \frac{\sigma \cdot u_{1 - \frac{\alpha}{2}}}{\bar{X}_{(n)} - \text{untere Grenze}} \right)^2$$
+$$
+n \geq \left( \frac{2 \cdot u_{1 - \frac{\alpha}{2}} \cdot \sigma}{\text{Länge}} \right)^2
+$$
+\begin{lstlisting}
+n_umgestellt <- round(((pop_sd * q) / (U - sample_mean))^2)
+n_umgestellt <- round(((pop_sd * q) / (sample_mean - L))^2)
+n <- ceiling(((2 * q * sd) / length)^2)
+n_aus_moe <- ceiling(((q * pop_sd) / moe)^2)
+\end{lstlisting}
+\fbox{(MOE): Mit Margin of Error }
+$$
+MOE = u_{1 - \frac{\alpha}{2}} \cdot \frac{\sigma}{\sqrt{n}}
+$$
+$$
+n = \left( \frac{u_{1 - \frac{\alpha}{2}} \cdot \sigma}{MOE} \right)^2
+$$
+\begin{lstlisting}
+moe <- qnorm(1 - alpha / 2) * (pop_sd / sqrt(n))
+\end{lstlisting}
+\fbox{$\alpha$: Für das Signifikanzniveau $\alpha$ \textcolor{red}{UND} Confidence Level}
+$$
+\alpha = 2 \cdot \left( 1 - \Phi(u_{1 - \frac{\alpha}{2}}) \right)
+$$
+$$
+\alpha = 2 \cdot \left( 1 - \Phi\left(\frac{\text{Intervalllänge} \cdot \sqrt{n}}{2 \cdot \sigma}\right) \right)
+$$
+\textcolor{red}{\warning}Um den Confidence Level zu bekommen: 1 - alpha \textcolor{red}{\warning}
+\begin{lstlisting}
+z_value <- (length * sqrt(n)) / (2 * sigma)
+alpha <- 2 * (1 - pnorm(z_value))
+\end{lstlisting}
+
+\fbox{Intervalllänge: Formel für die Intervalllänge}
+$$
+\text{Intervalllänge} = U - L
+$$
+$$
+\text{Intervalllänge} = 2 \cdot E = 2 \cdot u_{1 - \frac{\alpha}{2}} \cdot \frac{\sigma}{\sqrt{n}}
+$$
+\begin{lstlisting}
+intervallleange <- 2 * qnorm(1 - alpha / 2) * (sample_sd / sqrt(n))
+\end{lstlisting}
+\fbox{MOE mit Intervalllänge}
+
+$$
+E = \frac{\text{Intervalllänge}}{2} = u_{1 - \frac{\alpha}{2}} \cdot \frac{\sigma}{\sqrt{n}}
+$$
+
+\end{multicols*}

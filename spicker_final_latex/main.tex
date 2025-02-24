@@ -1,0 +1,150 @@
+
+\documentclass[10pt,a4paper]{article}
+
+% -------------------------------------------------------------------
+% packages 
+% -------------------------------------------------------------------
+\usepackage{markdown}
+% muss an erster stelle
+\usepackage[a4paper,margin=1cm,footskip=.5cm]{geometry}
+\usepackage{multicol}
+\usepackage{amsmath,amsthm,amsfonts,amssymb}
+\usepackage{graphicx,overpic}
+\usepackage{color, colortbl}
+\usepackage{hyperref}
+\usepackage{listings}
+\usepackage{mdframed}
+\usepackage{minted}
+\usepackage{enumitem}
+%
+% fuer dei pvalue tabelle
+\usepackage[T1]{fontenc}
+\usepackage{lmodern}
+\usepackage{multicol}   % für mehrspaltiges Layout
+\usepackage{booktabs}   % für schönere Tabellenlinien
+\usepackage{amsmath}    % für mathematische Umgebungen
+\usepackage{comment}
+% -------------------------------------------------------------------
+% parameters 
+% -------------------------------------------------------------------
+
+% margins & spacing 
+\geometry{margin = 0.5in}
+%\pagestyle{empty}
+\setlength{\parindent}{0pt} 
+\setlength{\parskip}{0pt}
+\usepackage{xcolor}
+ % box style
+\begin{comment}
+\lstset{ 
+    numbers=left,
+    basicstyle = \ttfamily,
+    frame = single,
+    rulecolor=\color{green},
+    breaklines = true,
+    columns = fullflexible,
+    stringstyle=\color{DarkGreen},
+    otherkeywords={0,1,2,3,4,5,6,7,8,9},
+    morekeywords={TRUE,FALSE},
+    deletekeywords={data,frame,length,as,character},
+    keywordstyle=\color{blue},
+    commentstyle=\color{DarkGreen},
+}
+\end{comment}
+
+% hyperlinks 
+\hypersetup{
+    colorlinks = true,
+    linkcolor = blue,
+    filecolor = magenta,      
+    urlcolor = cyan,
+}
+
+
+\usepackage{tcolorbox}
+\usepackage[utf8]{inputenc}
+\usepackage{color,soul}
+\usepackage{fourier}
+\usepackage{verbatim}
+\setul{0.5ex}{0.3ex}
+\setulcolor{red}
+\renewcommand\fbox[1]{\fcolorbox{red}{white}{\textbf{ #1}}}% multicol parameters
+\newcommand\fboxyellow[1]{%
+    {\setlength{\fboxrule}{2pt}% Rahmenbreite nur hier ändern
+    \fcolorbox{yellow}{white}{\large #1}}%
+}% multicol parameters
+\setlength{\fboxrule}{2pt} % Rahmenbreite auf 2pt setzen
+\setlength{\premulticols}{2pt}
+\setlength{\postmulticols}{2pt}
+\setlength{\multicolsep}{2pt}
+\setlength{\columnsep}{20pt}
+
+
+
+
+% -------------------------------------------------------------------
+% functions & environments 
+% -------------------------------------------------------------------
+
+% mono space font 
+\newcommand{\code}[1]{\texttt{#1}}
+
+\definecolor{codegreen}{rgb}{0,0.6,0}
+\definecolor{codegray}{rgb}{0.5,0.5,0.5}
+\definecolor{codepurple}{rgb}{150, 150, 150}
+\definecolor{backcolour}{rgb}{230, 230, 230}
+\definecolor{anti-flashwhite}{rgb}{0.95, 0.95, 0.96}
+\lstdefinestyle{mystyle}{
+    backgroundcolor=\color{backcolour},   
+    commentstyle=\color{codegreen},
+    keywordstyle=\color{black},
+    numberstyle=\tiny\color{codegray},
+    stringstyle=\color{codepurple},
+    basicstyle=\ttfamily,
+    breakatwhitespace=false,         
+    breaklines=true,    captionpos=b,                    
+    keepspaces=true, numbers=left,                    
+    numbersep=5pt, showspaces=false,                
+    showstringspaces=false, showtabs=false, tabsize=2,
+    frame = single,
+    rulecolor=\color{green},
+    otherkeywords={0,1,2,3,4,5,6,7,8,9},}
+\lstset{style=mystyle, language=R}
+\newenvironment{rcode}[1]
+ {\VerbatimEnvironment
+  \begin{minted}[
+    breaklines,
+    frame=single,fontsize=\small,
+bgcolor=anti-flashwhite,
+    linenos]{R}}
+ {\end{minted}}
+% -------------------------------------------------------------------
+% functions & environments 
+% -------------------------------------------------------------------
+
+\begin{document}
+
+\include{Schema}
+\setcounter{page}{1}
+\begin{multicols*}{2}
+\raggedcolumns
+\include{beschreibende}
+\end{multicols*}
+\include{probability}
+\begin{multicols*}{2}
+\raggedcolumns
+\include{Normal_Dis}
+\include{distributions}
+\include{Prob_beispiele}
+\include{tests}
+\include{case1-2}
+\include{case3-4}
+\include{2sample}
+
+\end{multicols*}
+
+\end{document}
+
+% ---------------------------------------------------------------
+% template 
+% ---------------------------------------------------------------

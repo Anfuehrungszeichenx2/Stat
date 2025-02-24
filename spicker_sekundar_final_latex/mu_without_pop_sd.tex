@@ -1,0 +1,141 @@
+\begin{multicols*}{2}
+
+\begin{center}
+     \Large{Confidence Interval for $\mu$ (Unknown Population $\sigma$)}
+\end{center}
+\begin{center}
+     \Large{Wir suchen den $\mu$, und wissen die Standardabweichung des Samples $S_{(n)}$}
+\end{center}
+
+$$
+\left[ \bar{X}_{(n)} - t_{1 - \frac{\alpha}{2}, n-1} \cdot \frac{S_{(n)}}{\sqrt{n}}, \, \bar{X}_{(n)} + t_{1 - \frac{\alpha}{2}, n-1} \cdot \frac{S_{(n)}}{\sqrt{n}} \right]
+$$
+Falls wir ein Sample haben, können wir den \(t\)-Test nutzen.
+\fbox{Nur Two sided}
+\begin{lstlisting}
+library(TeachingDemos)
+sample <- c(8, 9, 10, 13, 14, 16, 17, 20, 21)
+n <- length(sample)
+sample_mean <- mean(sample)
+sample_sd <- sd(sample)
+alpha <- 0.05
+t <- qt(1 - (alpha / 2), n - 1)
+L <- sample_mean - t * (sample_sd / sqrt(n))
+U <- sample_mean + t * (sample_sd / sqrt(n))
+t.test(x = sample, conf.level = 1 - alpha, alternative = 'two.sided')
+\end{lstlisting}
+\fbox{Nur Upper oder Lower}
+
+Wir müssen alpha nicht mehr teilen, da sich die Prozente auf eine Seite konzentrieren
+\begin{lstlisting}
+L_alleine <- sample_mean - qt(1 - alpha, n - 1) * (sample_sd / sqrt(n))
+U_alleine <- sample_mean + qt(1 - alpha, n - 1) * (sample_sd / sqrt(n))
+\end{lstlisting}
+\begin{center}
+     \Large{Umformungen}
+\end{center}
+\fbox{$\bar{X}_{(n)}$: Für den Sample Mean $\bar{X}_{(n)}$ Umstellen}
+$$
+\bar{X}_{(n)} = \frac{\text{obere Grenze} + \text{untere Grenze}}{2}
+$$
+\begin{lstlisting}
+sample_mean_umgestellt <- (L + U) / 2
+\end{lstlisting}
+
+\hrule
+\fbox{$t_{1 - \frac{\alpha}{2}, n-1}$: Für Quantile der $t$-Verteilung $t_{1 - \frac{\alpha}{2}, n-1}$}
+
+Aus der Intervalllänge:
+$$
+t_{1 - \frac{\alpha}{2}, n-1} = \frac{\text{Intervalllänge} \cdot \sqrt{n}}{2 \cdot S_{(n)}}
+$$
+Aus der oberen Grenze:
+$$
+t_{1 - \frac{\alpha}{2}, n-1} = \frac{\text{obere Grenze} - \bar{X}_{(n)}}{\frac{S_{(n)}}{\sqrt{n}}}
+$$
+Aus der unteren Grenze:
+$$
+t_{1 - \frac{\alpha}{2}, n-1} = \frac{\bar{X}_{(n)} - \text{untere Grenze}}{\frac{S_{(n)}}{\sqrt{n}}}
+$$
+\begin{lstlisting}
+t_umgestellt_1 <- (U - L) * sqrt(n) / (2 * sample_sd)
+t_umgestellt_2 <- (U - sample_mean) / (sample_sd / sqrt(n))
+t_umgestellt_3 <- (sample_mean - L) / (sample_sd / sqrt(n))
+\end{lstlisting}
+\columnbreak
+
+\fbox{$S_{(n)}$: Für die Sample Standardabweichung $S_{(n)}$}
+
+Aus der oberen Grenze:
+$$
+S_{(n)} = \frac{\left( \text{obere Grenze} - \bar{X}_{(n)} \right) \cdot \sqrt{n}}{t_{1 - \frac{\alpha}{2}, n-1}}
+$$
+Aus der unteren Grenze:
+$$
+S_{(n)} = \frac{\left( \bar{X}_{(n)} - \text{untere Grenze} \right) \cdot \sqrt{n}}{t_{1 - \frac{\alpha}{2}, n-1}}
+$$
+\begin{lstlisting}
+sample_sd1 <- (U - sample_mean) * (sqrt(n)) / t
+sample_sd2 <- (sample_mean - L) * (sqrt(n)) / t
+\end{lstlisting}
+
+\fbox{$n$: Für die Sample size $n$}
+
+Aus der oberen Grenze:
+$$
+n = \left( \frac{S_{(n)} \cdot t_{1 - \frac{\alpha}{2}, n-1}}{\text{obere Grenze} - \bar{X}_{(n)}} \right)^2
+=\left( \frac{S_{(n)} \cdot t_{1 - \frac{\alpha}{2}, n-1}}{\bar{X}_{(n)} - \text{untere Grenze}} \right)^2
+$$
+$$
+n \geq \left( \frac{2 \cdot t_{1 - \frac{\alpha}{2}} \cdot \sigma}{\text{Länge}} \right)^2
+$$
+$$
+n = \left( \frac{t_{1 - \frac{\alpha}{2}, n-1} \cdot S_{(n)}}{MOE} \right)^2
+$$
+\begin{lstlisting}
+n_umgestellt_1 <- round(((sample_sd * t_value) / (U - sample_mean))^2)
+n_umgestellt_2 <- round(((sample_sd * t_value) / (sample_mean - L))^2)
+n <- ceiling(((2 * t * sample_sd) / length)^2)
+n_aus_moe <- ceiling(((t_value * sample_sd) / moe)^2)
+\end{lstlisting}
+
+\fbox{(MOE): Mit Margin of Error }
+$$
+MOE = t_{1 - \frac{\alpha}{2}, n-1} \cdot \frac{S_{(n)}}{\sqrt{n}}
+$$
+\begin{lstlisting}
+moe <- t_value * (sample_sd / sqrt(n))
+\end{lstlisting}
+\fbox{$\alpha$: Für das Signifikanzniveau $\alpha$}
+$$
+\alpha = 2 \cdot \left( 1 - \Phi\left(t_{1 - \frac{\alpha}{2}, n-1}\right) \right)
+$$
+$$
+\alpha = 2 \cdot \left( 1 - \Phi\left(\frac{\text{Intervalllänge} \cdot \sqrt{n}}{2 \cdot s}\right) \right)
+$$
+\textcolor{red}{\warning}Um den Confidence Level zu bekommen: 1 - alpha \textcolor{red}{\warning}
+\begin{lstlisting}
+new_t <- (length*sqrt(n)) /(2 * sample_sd)
+alpha <- 2 * (1-pt(new_t, n - 1))
+\end{lstlisting}
+
+\fbox{Intervalllänge: Formel für die Intervalllänge}
+$$
+\text{Intervalllänge} = U - L
+$$
+$$
+\text{Intervalllänge} = 2 \cdot MOE = 2 \cdot t_{1 - \frac{\alpha}{2}, n-1} \cdot \frac{S_{(n)}}{\sqrt{n}}
+$$
+\begin{lstlisting}
+length <- U - L
+length <- 2 * qt(1 - (alpha / 2), df = n - 1) * (sample_sd / sqrt(n))
+\end{lstlisting}
+
+\fbox{MOE mit Intervalllänge}
+$$
+MOE = \frac{\text{Intervalllänge}}{2} = t_{1 - \frac{\alpha}{2}, n-1} \cdot \frac{S_{(n)}}{\sqrt{n}}
+$$
+\begin{lstlisting}
+moe_aus_intervalllaenge <- intervalllaenge / 2
+\end{lstlisting}
+\end{multicols*}

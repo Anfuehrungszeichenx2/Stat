@@ -1,0 +1,177 @@
+\begin{center}
+   \fbox{III)Test für Varianz $\textcolor{blue}{\sigma_0^2}$:}
+\end{center}
+\normalsize
+
+Hauptziel: Hier wird die Hypothese über die Varianz ($\textcolor{blue}{\sigma_0^2}$) getestet.
+\begin{center}
+\fboxyellow{
+     \Large{Mean $\mu$ \ul{und} SD $\sigma$ sind unbekannt}
+}
+
+\textcolor{red}{\warning} Kein $\sigma_0$ da $\sigma$ gegeben durch $H_0$\textcolor{red}{\warning}
+
+\textcolor{red}{\warning} Also kein Schätzwert \textcolor{red}{\warning}
+\end{center}
+\large{\textbf{Gegeben muss sein:}}
+\[
+H_0: \sigma^2 = \textcolor{blue}{\sigma_0^2}, \quad H_0: \sigma^2 \leq \textcolor{blue}{\sigma_0^2}, \quad H_0: \sigma^2 \geq \textcolor{blue}{\sigma_0^2}
+\]
+\[
+\begin{array}{|c|l|}
+\hline
+\textbf{Symbol} & \textbf{Bedeutung} \\
+\hline
+S_{(n)}& \text{Sample SD} \\
+\overline{X}_{(n)} & \text{Sample Mean} \\
+\hline
+\end{array}
+\]
+\begin{comment}
+\large{\textbf{Teststatistic:}}
+\[
+T \;=\; \frac{(n-1)\,S_{(n)}^2}{\textcolor{blue}{\sigma^2}}
+\;\;\sim\;\;\chi^2_{n-1}
+\quad\text{with}\quad
+S_{(n)}^2
+\;=\;
+\frac{1}{n-1}\sum_{i=1}^n
+\bigl(X_i - \overline{X}_{(n)}\bigr)^2.
+\]
+\end{comment}
+
+\large{\textbf{Decision Rule:}}
+\[
+T
+\;=\;
+\frac{(n-1)\,S_{(n)}}{\textcolor{blue}{\sigma_0^2}}
+\;\in\; R
+\quad\Longrightarrow\quad
+\text{reject }H_0.
+\]
+
+\large{\textbf{Rejection Region \(R\):}}
+\[
+\begin{array}{|c|c|}
+\hline
+H_0 & \text{rejection region } R \\
+\hline
+\sigma^2 = \textcolor{blue}{\sigma_0^2}
+&
+(0,\;\chi^2_{n-1,\,\tfrac{\alpha}{2}})
+\;\cup\;
+\bigl(\chi^2_{n-1,\,1-\tfrac{\alpha}{2}},\,\infty\bigr)
+\\ \hline
+\sigma^2 \leq \textcolor{blue}{\sigma_0^2}
+&
+\bigl(\chi^2_{n-1,\,1-\alpha},\,\infty\bigr)
+\\ \hline
+\sigma^2 \geq \textcolor{blue}{\sigma_0^2}
+&
+\bigl(0,\;\chi^2_{n-1,\,\alpha}\bigr)
+\\ \hline
+\end{array}
+\]
+\large{\textbf{Beispiel:}}
+\begin{rcode}{1}
+#h0: sd >= 7, h1: sd <7
+n <- 82
+sample_mu <- 248
+sample_sd <- 5
+alpha <- 0.05
+sd0 <- 7
+#Rejection region 
+R <- qchisq(alpha, n-1)
+#[ , 61.26148
+#Teststatistics
+t <- ((n - 1) * sample_sd)/sd0
+#57.85714
+t < r
+#We reject H0, in R area
+p_value <- pchisq(t, n-1)
+#0.02419782
+p_value < alpha
+#we reject H0
+\end{rcode}
+
+\textbf{P-value Berechnen:}
+\begin{rcode}{1}
+pchisq(t, n-1) #H0: sd >= sd0
+1-pchisq(t, n-1) #H0: sd <= sd0
+2*pchisq(-abs(t), n-1) #H0: sd = sd0
+\end{rcode}
+
+\columnbreak
+\begin{center}
+   \fbox{IIII)Bernoulli Test für Probability \textcolor{blue}{$p_0$}:}
+\end{center}
+\normalsize
+
+Hauptziel: Zu prüfen, ob die beobachtete Erfolgsrate $\hat{p}$ signifikant von der vorgegebenen Wahrscheinlichkeit \textcolor{blue}{$p_0$} abweicht
+\begin{center}
+\fboxyellow{
+     \Large{Probability \textcolor{blue}{$p_0$} ist unbekannt}
+}$$
+\text{Number of successes: } X = \sum_{i=1}^n X_i \sim B(n, p), \quad \text{d.h. } \mathbb{E}(X) = np
+$$$$
+\text{Var}(X) = np(1-p).
+$$
+\end{center}
+\large{\textbf{Gegeben muss sein:}}
+
+\[
+H_0: p = \textcolor{blue}{\textcolor{blue}{p_0}}, \quad H_0: p \leq \textcolor{blue}{p_0}, \quad H_0: p \geq \textcolor{blue}{p_0}
+\]
+\[
+\begin{array}{|c|l|}
+\hline
+\textbf{Symbol} & \textbf{Bedeutung} \\
+\hline
+n& \text{Stichprobengröße} \\
+X & \text{Number of successes} \\
+\hat{p}& \frac{X}{n} \text{ Example Probability} \\
+\hline
+\end{array}
+\]
+\large{\textbf{Teststatistic}}
+$$
+T = \frac{\hat{p} - \textcolor{blue}{p_0}}{\sqrt{\frac{\textcolor{blue}{p_0}(1-\textcolor{blue}{p_0})}{n}}}, \quad \text{mit } \hat{p} = \frac{X}{n}.
+$$
+\large{\textbf{Rejection Region $R$}}
+\[
+\begin{array}{|c|c|}
+\hline
+H_0 & \text{Rejection Area } R \\ \hline
+p = \textcolor{blue}{p_0} & (-\infty, -u_{1-\frac{\alpha}{2}}) \cup (u_{1-\frac{\alpha}{2}}, \infty) \\ \hline
+p \leq \textcolor{blue}{p_0} & (u_{1-\alpha}, \infty) \\ \hline
+p \geq \textcolor{blue}{p_0} & (-\infty, -u_{1-\alpha}) \\ \hline
+\end{array}
+\]
+\large{\textbf{Normal Approximation:}}
+\begin{rcode}{1}
+#a) 80% immunity rate
+#b) H0: p <= 80, H1: p > 80
+p0 <- 0.8; n <- 200; x <- 172
+alpha <- 0.05
+phut <- x / n
+#Rejection region
+R <- qnorm(1 - alpha)
+#r <- [1.644854, ]
+#teststatistic
+t <- (phut-p0)/sqrt((p0 * (1 - p0)) / n)
+#2.12132
+t > R
+#We reject H0
+p_value <- 1 - pnorm(t)
+#0.01694743
+p_value < alpha
+#We reject H0
+\end{rcode}
+\large{\textbf{Exact test:}}
+\begin{rcode}{1}
+#exact
+binom.test(172, p = 0.8, n = n, alternative = 'greater', conf.level = 1-alpha)
+#0.01793
+\end{rcode}
+\large{\textbf{P-Value berechnen: Wie bei Gauß-Test}}
+

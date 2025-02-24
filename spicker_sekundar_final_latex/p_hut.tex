@@ -1,0 +1,150 @@
+\begin{multicols*}{2}
+
+\begin{center}
+     \Large{Confidence Interval for $\hat{p}$ (Proportion)(Stichprobenanteil)}
+\end{center}
+
+\begin{center}
+     \Large{We are estimating $\hat{p}$, the sample proportion}
+\end{center}
+
+\[
+\left[ \hat{p} - u_{1 - \frac{\alpha}{2}} \cdot \sqrt{\frac{\hat{p}(1 - \hat{p})}{n}}, \, \hat{p} + u_{1 - \frac{\alpha}{2}} \cdot \sqrt{\frac{\hat{p}(1 - \hat{p})}{n}} \right]
+\]
+$$\hat{p} = \frac{x}{n}$$
+\fbox{Info nur für den Mert Kaan:::::::}
+$$
+u_{1 - \frac{\alpha}{2}} = \text{qnorm(1 - (alpha/2)}
+$$
+\begin{lstlisting}
+prob <- 0.7
+alpha <- 0.05
+n <- 250
+p_hut <- (prob*n)/n
+q <- qnorm(1-(alpha/2))
+L <- p_hut - q * sqrt((p_hut * (1-p_hut))/n)
+U <- p_hut + q * sqrt((p_hut * (1-p_hut))/n)
+binom.test(x=0.7 * n, n=n, conf.level = 1-alpha, alternative = "two.sided")$conf.int
+#[0.6390569, 0.7561285]
+\end{lstlisting}
+\textbf{Einschätzung:}
+Wir sind uns zu 95\% sicher, dass zwischen 64\% und 75\% der Wähler ja gestimmt haben.
+\bigbreak
+
+\fbox{Nur obere oder untere Grenze berechnen:}
+
+Hier teilen wir $\alpha$ nicht mehr, da sich die Prozente auf eine Seite konzentrieren:
+
+\begin{lstlisting}
+q <- qnorm(1 - alpha)
+L_alleine <- p_hut - q * sqrt((p_hut * (1 - p_hut))/n)
+L_exact <- binom.test(x=0.7*n, n=n, conf.level = 1-alpha, alternative = 'greater')$conf.int
+U_alleine <- p_hut + q * sqrt((p_hut * (1 - p_hut))/n)
+U_exact <- binom.test(x=0.7*n, n=n, conf.level = 1-alpha, alternative = 'less')$conf.int
+
+\end{lstlisting}
+
+\hrule
+
+\begin{center}
+     \Large{Umformungen}
+\end{center}
+
+\fbox{$\hat{p}$: Solving for $\hat{p}$}
+\[
+\hat{p} = \frac{\text{upper limit} + \text{lower limit}}{2}
+\]
+
+\begin{lstlisting}
+p_hut <- (L + U) / 2
+\end{lstlisting}
+
+\fbox{Sample Länge $n$ (Known $\hat{p}$:}
+
+\begin{lstlisting}
+n <- ceiling((qnorm(1-alpha/2)^2 * p * (1-p)) / (length/2)^2)
+\end{lstlisting}
+
+\columnbreak
+\fbox{$\alpha$: Für alpha umstellen}
+
+\textcolor{red}{\warning}Um das Confidence Level zu bekommen: 1 - alpha \textcolor{red}{\warning}
+$$
+\alpha = 2 \cdot \left( 1 - \Phi\left(u_{1 - \frac{\alpha}{2}}\right) \right)
+$$
+$$
+\alpha = 2 \cdot \left( 1 - \Phi\left(\frac{\text{Intervalll\"ange} \cdot \sqrt{n}}{2 \cdot \sqrt{\hat{p}(1-\hat{p})}}\right) \right)
+$$
+
+\begin{lstlisting}
+z_value <- (leange * sqrt(n)) / 
+  (2 * sqrt(p_hut * (1 - p_hut)))
+alpha <- 1-(2 * (1 - pnorm(z_value)))
+confidence_level <- 2 * pnorm(length/(2*sqrt(p_hut*(1-p_hut)/n)))-1
+
+\end{lstlisting}
+
+
+\fbox{$u_{1 - \frac{\alpha}{2}}$:
+
+\small{Für Quantile der Normalverteilung Umformen}}
+
+Aus der Intervalll\"ange:
+\[
+u_{1 - \frac{\alpha}{2}} = \frac{\text{Intervalll\"ange} \cdot \sqrt{n}}{2 \cdot \sqrt{\hat{p}(1-\hat{p})}} = 
+\]
+
+
+
+
+Aus der oberen und unteren Grenze:
+\[
+u_{1 - \frac{\alpha}{2}} = \frac{\hat{p} - \text{untere Grenze}}{\sqrt{\frac{\hat{p}(1-\hat{p})}{n}}} = \frac{\text{obere Grenze} - \hat{p}}{\sqrt{\frac{\hat{p}(1-\hat{p})}{n}}}
+\]
+
+\begin{lstlisting}
+#nach q umstellen
+leange <- U - L
+q_umgestellt_1 <- (leange * sqrt(n)) / (2 * sqrt(p_hut * (1 - p_hut)))
+q_umgestellt_2 <- (U - p_hut) / (sqrt(p_hut * (1 - p_hut) / n))
+q_umgestellt_3 <- (p_hut - L) / (sqrt(p_hut * (1 - p_hut) / n))
+\end{lstlisting}
+
+\fbox{MOE (Margin of Error):}
+\[
+MOE = u_{1 - \frac{\alpha}{2}} \cdot \sqrt{\frac{\hat{p}(1-\hat{p})}{n}}= \frac{Intervalllänge}{2}
+\]
+
+\begin{lstlisting}
+moe <- q * (sqrt(p_hut * (1 - p_hut) / n))
+moe_2 <- laenge / 2
+\end{lstlisting}
+
+\fbox{Intervalll\"ange:}
+\[
+\text{Intervalll\"ange} = 2 \cdot u_{1 - \frac{\alpha}{2}} \cdot \sqrt{\frac{\hat{p}(1-\hat{p})}{n}} = U - L
+\] 
+
+\begin{lstlisting}
+length <- 2 * q * (sqrt(p_hut * (1 - p_hut) / n))
+length <- U - L
+\end{lstlisting}
+\fbox{Minimal Sample Länge $n$ (Unknown $\hat{p}$):}
+\begin{lstlisting}
+n <- ceiling((qnorm(1-alpha/2) / length)^2)
+\end{lstlisting}
+------
+
+$\hat{p}$ wird auf 0.5 gesetzt, wenn wir den Wert nicht kennen.
+
+Wenn wir einen \textcolor{red}{Two sided} Confidence Interval haben dann müssen wir unser alpha teilen:
+\large{\[
+n = \frac{(u_{1 - \frac{\alpha}{2}})^2 \cdot \hat{p}(1-\hat{p})}{MOE^2}
+\]}
+
+Wenn wir einen \textcolor{red}{Upper oder Lower Bound} haben:
+\large{\[
+n = \frac{(u_{1 - \alpha})^2 \cdot \hat{p}(1-\hat{p})}{MOE^2}
+\]}
+
+\end{multicols*}

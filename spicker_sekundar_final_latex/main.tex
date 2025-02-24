@@ -1,0 +1,78 @@
+
+\documentclass[10pt,a4paper]{article}
+
+% -------------------------------------------------------------------
+% packages 
+% -------------------------------------------------------------------
+\usepackage{fourier}
+\usepackage{geometry}
+\usepackage{multicol}
+\usepackage{amsmath,amsthm,amsfonts,amssymb}
+\usepackage{graphicx,overpic}
+\usepackage{color, colortbl}
+\usepackage{hyperref}
+\usepackage{listings}
+
+% -------------------------------------------------------------------
+% parameters 
+% -------------------------------------------------------------------
+
+% margins & spacing 
+\geometry{margin = 0.5in}
+\pagestyle{empty}
+\setlength{\parindent}{0pt} 
+\setlength{\parskip}{0pt}
+
+ % box style
+\lstset{ 
+    numbers=left,
+    basicstyle = \ttfamily,
+    frame = single,
+    rulecolor=\color{green},
+    breaklines = true,
+    columns = fullflexible,
+    stringstyle=\color{DarkGreen},
+    otherkeywords={0,1,2,3,4,5,6,7,8,9},
+    morekeywords={TRUE,FALSE},
+    deletekeywords={data,frame,length,as,character},
+    keywordstyle=\color{blue},
+    commentstyle=\color{DarkGreen},
+}
+% hyperlinks 
+\hypersetup{
+    colorlinks = true,
+    linkcolor = blue,
+    filecolor = magenta,      
+    urlcolor = cyan,
+}
+\usepackage{xcolor}
+
+\renewcommand\fbox[1]{\fcolorbox{red}{white}{\large #1}}% multicol parameters
+\setlength{\premulticols}{2pt}
+\setlength{\postmulticols}{2pt}
+\setlength{\multicolsep}{2pt}
+\setlength{\columnsep}{20pt}
+
+% -------------------------------------------------------------------
+% functions & environments 
+% -------------------------------------------------------------------
+
+% mono space font 
+\newcommand{\code}[1]{\texttt{#1}}
+
+% -------------------------------------------------------------------
+% functions & environments 
+% -------------------------------------------------------------------
+
+\begin{document}
+
+\input{mu_with_pop_sd}
+\input{mu_without_pop_sd}
+\input{misc}
+\input{p_hut}
+
+\end{document}
+
+% ---------------------------------------------------------------
+% template 
+% ---------------------------------------------------------------

@@ -1,0 +1,87 @@
+\section{\fbox{Probability - Beispiele}}
+\subsection{\fbox{Beispiel 1}}
+A biased coin (\textcolor{red}{head with probability 1/3})head with probability 1/3) is tossed. \textcolor{red}{If the coins shows tail a fair die is rolled 5 times}
+and if the coin shows head \textcolor{red}{a biased die (6 with probability 0.4) is rolled 5 times}. The number of sixes
+are counted.
+\subsubsection{a) Determine the density of the random X which counts the number of sixes.}
+\begin{rcode}{1}
+result <- tibble(
+    num = 0:5,
+    head = dbinom(num, 5, prob = 0.4),
+    tail = dbinom(num, 5, prob = 1/6),
+    dens = head * 1/3 + tail * 2/3
+)
+result
+\end{rcode}
+\subsubsection{b) Evaluate the expected value and the variance of the random variable X.}
+\begin{rcode}{1}
+expected <- sum(result$num * result$dens)
+expectedX <- sum(result$num^2 * result$dens)
+var <- expectedX - expected^2
+var
+\end{rcode}
+\subsubsection{c) What is the probability that the coin had shown a head if 3 sixes has been in the 5 rolls?}
+$$
+P(\text{Head}\mid \text{3 Sixes}) = \frac{P(\text{Head} \land\text{3 Sixes})}{P(\text{3 Sixes})}
+$$
+\begin{rcode}{1}
+p_head_and_three <- 1/3 * dbinom(3, 5, prob = 0.4)
+p_three <- 0.098233471 #dens wert für 3 aus der a
+p_head_when_threes <- p_head_and_three / p_three
+\end{rcode}
+\textbf{Hier als oneliner:}
+\begin{rcode}{1}
+(1/3 * dbinom(3, 5, prob = 0.4)) / 0.098233471
+\end{rcode}
+\columnbreak
+\subsection{\fbox{Beispiel 2}}
+In a particular town 10\% of the families have no children, 20\% have
+one child, 50\% have two children, 20\% have 3 children and 10\% have
+4 children. \textcolor{purple}{Let T represent the total number of children}, \textcolor{olive}{and G the
+number of girls}, in a family chosen at random from this town
+\subsubsection{a}
+Assuming that children are equally like to be boys or girls find
+distribution of G.
+\begin{rcode}{1}
+tibble(
+  g = 0:4) %>% rowwise() %>% 
+  mutate(
+    dens = sum(c(0.1, 0.2, 0.4, 0.2, 0.1) * 
+                 dbinom(g, size = 0:4,
+                 prob = 0.5))))
+      g    dens
+  <int>   <dbl>
+1     0 0.331  
+2     1 0.4    
+3     2 0.213  
+4     3 0.05   
+5     4 0.00625
+\end{rcode}
+\textbf{g = 0:4 :} gibt an wieviele Kinder die Familie hat.\\
+\textbf{dens :} Für jede Berechung von dens ist g eine Statische Zahl. Z.b 2.\\
+Wir berechnen die Prob das eine Familie 0-4 Kinder hat MAL die Prob das eine Familie mit 0-4 Kindern 2 Mädchen hat. Das wäre 0.213
+\subsubsection{b}
+f you know that 2 girls are in an arbitrary chosen family, find the
+probability that the family has 4 children\\
+\textbf{A:}
+Hier brauchen wir Bayes theorem
+$$
+P(\text{4 Children}\mid \text{2 Girls}) = \frac{P(\text{4 Children} \land\text{2 Girls})}{P(\text{2 Girls})}
+$$
+\begin{rcode}{1}
+# P( 4 children | 2 girls) = P(4 child und 2 gils) / P( 2 girls)
+p_4child_2girls <- 0.1 * dbinom(2, 4 , 0.5)
+p_2girls <- 0.213
+p_4child_when_2girls <- p_4child_2girls / p_2girls
+p_4child_when_2girls
+\end{rcode}
+\subsubsection{b}
+Suppose the names of all children in the town are put into a hat,
+and a name is picked out at random. Let U be the total number
+of children in the family of the child picked at at random. Find
+the distribution of U.
+\begin{rcode}{1}
+(0:4) * c(0.1, 0.2, 0.4, 0.2, 0.1) / sum((0:4) * c(0.1, 0.2, 0.4, 0.2, 0.1))
+#0.0 0.1 0.4 0.3 0.2
+\end{rcode}
+jedes $N$ an Kindern die eine Familie haben kann Teilen wir durch das Expected Value an Kindern. So kennen wir die Chance das die Familie die wir ziehen $N$ Kinder hat

@@ -1,0 +1,62 @@
+\section*{Exercises Overview}
+
+\subsection*{Exercise 1: Descriptive p. 1-6}
+\begin{itemize}
+    \item Read CSV (p. 1)
+    \item Scales/Types (p. 6)
+    \item Tidy <- Pivot Longer, Pivot Wider, Separate (p. 1 ff.)
+    \item \texttt{CASE WHEN} (p. 3)
+    \item \texttt{GROUP BY} + \texttt{COUNT} (p. 3)
+    \item Summarize (p. 3)
+    \item Linear Regression \textbf{OR} Contingency Table (p. 4 ff.)
+\end{itemize}
+
+\subsection*{Exercise 2: Probability, BINOMIAL Distribution p. 7-13}
+\begin{itemize}
+    \item Density Table (p. 13) \textbf{OR} pbinom (p. 8), dmultinom (p. 11),  dgeom (p.12)
+    \item Expected Value + Variance (p. 10)
+          \begin{itemize}
+              \item $E(X) = \sum x * P(x)$
+              \item $Var(X) = (\sum x^2 P(x)) - E(X)^2$
+          \end{itemize}
+    \item Conditional Probability (p. 11 ff.)
+          \begin{itemize}
+              \item $P(A|B) = \frac{P(A \cap B)}{P(B)}$
+              \item Use probabilities from Density Table
+          \end{itemize}
+    \item Brute Force pbinom 13.2 \textbf{(here OR in Exercise 3)} (p. 10)
+\end{itemize}
+
+\subsection*{Exercise 3: Central Limit Theorem, NORMAL Distribution p. 8, 10}
+\begin{itemize}
+    \item Expected Value + Variance for Approximate Distribution (p. 10)
+          \begin{itemize}
+              \item $X \sim N(\mu = E(X) * n, \sigma^2 = Var(X) * n)$
+          \end{itemize}
+    \item \texttt{pnorm} (p. 8, 10)
+    \item \texttt{qnorm} (p. 8, 10)
+    \item Brute Force pnorm 13.3 \textbf{(here OR in Exercise 2)} (p. 10)
+\end{itemize}
+
+\subsection*{Exercise 4: Confidence Intervals in externer PDF}
+\begin{itemize}
+    \item Determine type: Proportion, Mean, Variance
+    \item Confidence Interval:  
+          \begin{itemize}
+              \item KEYWORD: Normal Approximation \textbf{OR} Exact
+          \end{itemize}
+    \item Sample Size
+    \item Interval Length
+    \item Confidence Level
+\end{itemize}
+
+\subsection*{Exercise 5: Hypothesis Testing p. 14-18}
+\begin{itemize}
+    \item 1-Sample Test (p. 15 ff.)
+    \item Type of Error (p. 14)
+    \item 2-Sample Test (p. 17 ff.) 
+    
+    (WENN zwei Tests: erst 2-Sample F-Test für Varianz, dann nach Mu mithilfe vom Ergebnis) 
+    
+    (WENN ein Test: Zu 99\% 2-Sample Paired t-test) 
+\end{itemize}
